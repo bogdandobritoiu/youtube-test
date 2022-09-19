@@ -20,7 +20,7 @@ export const Icon = ({
   return (
     <SvgIcon
       // TODO: Fix this
-      // {...props}
+      {...props}
       viewBox={`0 0 24 24`}
       fill={color}
       width={width ?? size}

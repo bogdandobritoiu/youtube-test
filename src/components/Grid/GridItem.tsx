@@ -22,7 +22,7 @@ export const GridItem = (props: ICard) => {
   };
 
   const onMouseLeave = () => {
-    clearTimeout(timerRef.current);
+    // clearTimeout(timerRef.current);
     scale.value = 0;
     width.value = props.width;
     setTimeout(() => {

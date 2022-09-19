@@ -1,5 +1,3 @@
-import Home from "./src/screen/Home";
-
 import {
   Roboto_400Regular,
   Roboto_400Regular_Italic,
@@ -7,9 +5,9 @@ import {
   Roboto_500Medium_Italic,
   useFonts,
 } from "@expo-google-fonts/roboto";
-import { useFonts as useWebFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
-import { isMobile } from "./src/utils";
+import Home from "./src/screen/Home";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -23,5 +21,9 @@ export default function App() {
     return <AppLoading />;
   }
 
-  return <Home />;
+  return (
+    <SafeAreaProvider>
+      <Home />
+    </SafeAreaProvider>
+  );
 }

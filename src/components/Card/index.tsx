@@ -9,6 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import styled from "styled-components/native";
 import { getFormattedDate, isMobile, isWeb } from "../../utils";
+import { useMedia } from "../../utils/useMedia";
 import { Icon } from "../Icon";
 import { Tooltip } from "../Tooltip";
 import { Dots, IDotOption } from "./Dots";
@@ -40,9 +41,10 @@ export const Card = ({
 }: ICard) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
+  const media = useMedia();
 
   const fontSize = useSharedValue(14);
-  const spacings = useSharedValue(isMobile ? 12 : 0);
+  const spacings = useSharedValue(media.isMobile ? 12 : 0);
   const extraSpacings = useSharedValue(24);
 
   const config = { duration: 1000, easing: Easing.bezier(0.5, 0.01, 0, 1) };
@@ -59,7 +61,7 @@ export const Card = ({
   const fontStyle = useAnimatedStyle(() => {
     return {
       fontSize: withTiming(fontSize.value, config),
-      lineHeight: withTiming(fontSize.value + 6, config),
+      lineHeight: withTiming(fontSize.value + 3, config),
     };
   });
 
@@ -113,6 +115,10 @@ export const Card = ({
           onMouseEnter={onMouseEnterCard}
           onMouseLeave={onMouseLeaveCard}
           isActive={isActive}
+          style={{
+            marginHorizontal: media.isMobile ? 0 : 6,
+            marginBottom: media.isMobile ? 6 : 40,
+          }}
         >
           <StyledGridItemShadow isActive={isActive}>
             <Thumbnail
@@ -144,7 +150,11 @@ export const Card = ({
                 }}
               />
               <Animated.View style={[{ flex: 1 }, spacingRightStyle]}>
-                <StyledTitle>
+                <StyledTitle
+                  style={{
+                    marginBottom: media.isMobile ? 2 : 6,
+                  }}
+                >
                   <Animated.Text
                     style={[{ fontFamily: "Roboto_500Medium" }, fontStyle]}
                     numberOfLines={2}
@@ -153,15 +163,29 @@ export const Card = ({
                   </Animated.Text>
                 </StyledTitle>
 
-                <StyledInfo>
-                  <StyledCreator>
+                <View
+                  style={
+                    media.isMobile
+                      ? {
+                          flexDirection: "row",
+                          alignItems: "center",
+                          flexWrap: "wrap",
+                        }
+                      : {}
+                  }
+                >
+                  <StyledCreator
+                    style={{
+                      marginTop: media.isMobile ? 0 : 2,
+                    }}
+                  >
                     <Tooltip text={creator}>
                       <Text
                         style={{
                           fontSize: 12,
                           lineHeight: 12,
                           fontFamily: "Roboto_400Regular",
-                          color: "#aaaaaa",
+                          color: rgba("#030303", 0.6),
                         }}
                       >
                         {creator}
@@ -172,22 +196,26 @@ export const Card = ({
                       <Icon name="verified" size={12} />
                     </Tooltip>
                   </StyledCreator>
-                  <StyledStatistics>
+                  <StyledStatistics
+                    style={{
+                      marginTop: media.isMobile ? 0 : 5,
+                    }}
+                  >
                     <Text
                       style={{
                         fontSize: 12,
                         lineHeight: 12,
                         fontFamily: "Roboto_400Regular",
-                        color: "#aaaaaa",
+                        color: rgba("#030303", 0.6),
                       }}
                     >{`14 K views • ${getFormattedDate(
                       new Date(createdAt)
                     )}`}</Text>
                   </StyledStatistics>
-                </StyledInfo>
+                </View>
 
                 <View style={{ flexDirection: "row" }}>
-                  {live && !isMobile && (
+                  {live && !media.isMobile && (
                     <StyledLive>
                       <Icon color="white" name="live" size={16} />
                       <Text
@@ -205,7 +233,7 @@ export const Card = ({
                 </View>
               </Animated.View>
 
-              {(isHovered || isMobile) && (
+              {(isHovered || media.isMobile) && (
                 <Animated.View
                   style={[
                     {
@@ -279,8 +307,6 @@ const StyledGridItemShadow = styled(View)`
 `;
 
 const StyledGridItemContainer = styled(View)`
-  margin: 0 ${isWeb ? 8 : 0}px;
-  margin-bottom: ${isWeb ? 40 : 0}px;
   cursor: pointer;
   ${({ isActive }) => {
     if (isActive)
@@ -291,14 +317,12 @@ const StyledGridItemContainer = styled(View)`
 `;
 
 const StyledTitle = styled(View)`
-  margin-bottom: 6px;
   width: 100%;
 `;
 
 const StyledCreator = styled(View)`
   flex-direction: row;
   align-items: center;
-  margin-top: ${isMobile ? 0 : 2}px;
 `;
 
 const StyledLive = styled(View)`
@@ -310,20 +334,7 @@ const StyledLive = styled(View)`
   align-items: center;
 `;
 
-const StyledInfo = styled(View)`
-  ${() => {
-    if (isMobile) {
-      return `
-        flex-direction: row; 
-        align-items: center;
-        flex-wrap: wrap;
-      `;
-    }
-  }}
-`;
-
 const StyledStatistics = styled(View)`
   flex-direction: row;
   align-items: center;
-  margin-top: ${isMobile ? 0 : 5}px;
 `;

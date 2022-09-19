@@ -1,11 +1,57 @@
 import { rgba } from "polished";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withTiming,
+} from "react-native-reanimated";
 import styled from "styled-components/native";
+import { isMobile } from "../../utils";
 import { Icon } from "../Icon";
 
 export const Dots = ({ options }: { options: IDotOption[] }) => {
   const [isActive, setIsActive] = useState(false);
+
+  const opacity = useSharedValue(0);
+
+  const buttonStyles = useAnimatedStyle(() => {
+    const config = {
+      duration: isActive ? 300 : 100,
+      easing: Easing.bezier(0.5, 0.01, 0, 1),
+    };
+
+    return {
+      opacity: withTiming(opacity.value, config),
+    };
+  });
+
+  const borderStyles = useAnimatedStyle(() => {
+    const config = {
+      duration: isActive ? 300 : 100,
+      easing: Easing.bezier(0.5, 0.01, 0, 1),
+    };
+
+    return {
+      opacity: withTiming(opacity.value * 7, config),
+      borderWidth: 1,
+      borderColor: "black",
+      borderStyle: "solid",
+    };
+  });
+
+  function onToggleButton() {
+    opacity.value = 0.1;
+    setTimeout(() => {
+      opacity.value = 0;
+    }, 100);
+    if (isMobile) {
+    } else {
+      setIsActive(!isActive);
+    }
+  }
 
   return (
     <StyledDots>
@@ -18,10 +64,48 @@ export const Dots = ({ options }: { options: IDotOption[] }) => {
           </StyledOptionsContent>
         </StyledOptions>
       )}
-      <StyledButton onPress={() => setIsActive(!isActive)}>
-        <StyledDot />
-        <StyledDot />
-        <StyledDot />
+
+      <StyledButton onPress={onToggleButton}>
+        <Animated.View
+          style={[
+            {
+              position: "absolute",
+              top: "-25%",
+              left: "-25%",
+              right: "-25%",
+              bottom: "-25%",
+              borderRadius: 40,
+              backgroundColor: "black",
+            },
+            buttonStyles,
+          ]}
+        />
+        <Animated.View
+          style={[
+            {
+              position: "absolute",
+              top: "-25%",
+              left: "-25%",
+              right: "-25%",
+              bottom: "-25%",
+              borderRadius: 40,
+            },
+            borderStyles,
+          ]}
+        />
+
+        <Animated.View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Icon name="dots" size={isMobile ? 16 : 24} />
+          {/* <StyledDot />
+          <StyledDot />
+          <StyledDot /> */}
+        </Animated.View>
       </StyledButton>
     </StyledDots>
   );
@@ -103,9 +187,9 @@ const StyledButton = styled(Pressable)`
 `;
 
 const StyledDot = styled(View)`
-  width: 4px;
-  height: 4px;
+  width: ${isMobile ? 3 : 4}px;
+  height: ${isMobile ? 3 : 4}px;
   background: black;
   border-radius: 4px;
-  margin-bottom: 4px;
+  margin: ${isMobile ? 1.5 : 3}px 0;
 `;

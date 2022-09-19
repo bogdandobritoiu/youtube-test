@@ -1,17 +1,18 @@
 import React from "react";
 import {
   ActivityIndicator,
-  Dimensions,
   FlatList,
   ListRenderItem,
   ScrollView,
+  useWindowDimensions,
   View,
 } from "react-native";
 import styled from "styled-components/native";
 import { isMobile } from "../../utils";
+import { useMedia } from "../../utils/useMedia";
 import { ICard } from "../Card";
-import { GridItem } from "./GridItem";
 import Skeleton from "../Card/Skeleton";
+import { GridItem } from "./GridItem";
 
 interface IGrid<T> {
   items: T[];
@@ -26,7 +27,17 @@ export const Grid = ({
   onLoadMore,
   isLoading,
 }: IGrid<ICard>) => {
-  const windowWidth = Dimensions.get("window").width;
+  const windowWidth = useWindowDimensions().width;
+  const media = useMedia();
+  let itemWidth: number;
+  if (media.isTablet) {
+    itemWidth = (windowWidth - 4 * 24) / 2;
+  } else if (media.isMobile) {
+    itemWidth = windowWidth;
+  } else {
+    itemWidth = (windowWidth - 4 * 24) / 4;
+  }
+  const itemHeight = 300;
 
   const renderSkeleton = () => {
     return (
@@ -36,10 +47,16 @@ export const Grid = ({
             <Skeleton
               key={`skeleton-${index}`}
               isLoading={isLoading}
-              style={{
-                width: isMobile ? windowWidth : (windowWidth - 4 * 24) / 4,
-                height: isMobile ? "auto" : 300,
-              }}
+              style={
+                isMobile || media.isMobile
+                  ? {
+                      width: windowWidth,
+                    }
+                  : {
+                      width: itemWidth,
+                      height: 300,
+                    }
+              }
             />
           );
         })}
@@ -92,8 +109,8 @@ export const Grid = ({
     <ScrollView
       style={{ flex: 1 }}
       contentContainerStyle={{
-        paddingTop: 24,
-        paddingHorizontal: 16,
+        paddingTop: media.isMobile ? 0 : 24,
+        paddingHorizontal: media.isMobile ? 0 : 16,
       }}
       onScroll={({ nativeEvent }) => {
         if (isCloseToBottom(nativeEvent)) {
@@ -114,8 +131,8 @@ export const Grid = ({
             <GridItem
               {...item}
               key={item.id}
-              width={(windowWidth - 4 * 24) / 4}
-              height={300}
+              width={itemWidth}
+              height={itemHeight}
             />
           ))}
         </View>

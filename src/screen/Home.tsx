@@ -1,19 +1,21 @@
 import * as React from "react";
-import { Text, View, StyleSheet, SafeAreaView } from "react-native";
+import { View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Grid } from "../components/Grid";
 import { useHome } from "./useHome";
 
 const Home = () => {
   const { items, isLoadingMore, onLoadMore, isLoading } = useHome();
+  const { top } = useSafeAreaInsets();
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingTop: top }}>
       <Grid
         items={items}
         isLoadingMore={isLoadingMore}
         onLoadMore={onLoadMore}
         isLoading={isLoading}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

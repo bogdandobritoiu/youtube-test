@@ -2,6 +2,8 @@ import { rgba } from "polished";
 import { useState } from "react";
 import { Image, ImageSourcePropType, Text, View } from "react-native";
 import styled from "styled-components/native";
+import { isMobile } from "../../utils";
+import { useMedia } from "../../utils/useMedia";
 
 export interface IThumb {
   url: string;
@@ -26,6 +28,7 @@ export const Thumbnail = ({
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 }) => {
+  const media = useMedia();
   const [isHovered, setIsHovered] = useState(false);
 
   const onMouseEnterThumbnail = () => {
@@ -42,6 +45,7 @@ export const Thumbnail = ({
     <StyledThumbnail
       onMouseEnter={onMouseEnterThumbnail}
       onMouseLeave={onMouseLeaveThumbnail}
+      style={{ height: media.isMobile ? 210 : 160 }}
     >
       <Image source={image} style={{ height: "100%" }} />
       <StyledTimer>
@@ -74,7 +78,6 @@ export const Thumbnail = ({
 };
 
 const StyledThumbnail = styled(View)`
-  height: 160px;
   background: gray;
 `;
 

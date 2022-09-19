@@ -19,6 +19,7 @@ export const Icon = ({
 }: IconInterface) => {
   return (
     <SvgIcon
+      // TODO: Fix this
       // {...props}
       viewBox={`0 0 24 24`}
       fill={color}

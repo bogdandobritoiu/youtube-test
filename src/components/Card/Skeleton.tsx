@@ -1,18 +1,19 @@
-import SkeletonLoader from "expo-skeleton-loader";
 import { useEffect } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import styled from "styled-components/native";
 import { isMobile } from "../../utils";
 
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
   Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
+import { useMedia } from "../../utils/useMedia";
 
 export default function Skeleton({ isLoading, style }) {
   const opacity = useSharedValue(1);
+  const media = useMedia();
 
   useEffect(() => {
     opacity.value = isLoading ? 1 : 0;
@@ -32,9 +33,22 @@ export default function Skeleton({ isLoading, style }) {
 
   return (
     <Animated.View style={[style, animatedStyle]}>
-      <StyledSkeleton pointerEvents="none">
-        <StyledThumbnail />
-        <StyledContent>
+      <StyledSkeleton
+        pointerEvents="none"
+        style={{
+          paddingHorizontal: media.isMobile ? 0 : 8,
+        }}
+      >
+        <StyledThumbnail
+          style={{
+            height: media.isMobile ? 210 : 160,
+          }}
+        />
+        <StyledContent
+          style={{
+            paddingLeft: media.isMobile ? 12 : 0,
+          }}
+        >
           <StyledCreator />
           <View style={{ flex: 1 }}>
             <StyledTextContainer style={{ width: "90%" }} />
@@ -48,17 +62,14 @@ export default function Skeleton({ isLoading, style }) {
 }
 
 const StyledSkeleton = styled(View)`
-  padding: 0 ${isMobile ? 0 : 8}px;
-  padding-bottom: 12px;
+  padding-bottom: 20px;
 `;
 const StyledThumbnail = styled(View)`
   background: gray;
-  height: 160px;
 `;
 const StyledContent = styled(View)`
   padding-top: 12px;
   flex-direction: row;
-  padding-left: ${isMobile ? 12 : 0}px;
 `;
 const StyledCreator = styled(View)`
   height: 36px;

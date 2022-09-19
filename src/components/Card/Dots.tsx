@@ -4,7 +4,7 @@ import { Pressable, Text, View } from "react-native";
 import styled from "styled-components/native";
 import { Icon } from "../Icon";
 
-export const Dots = ({ options }: IDotOption[]) => {
+export const Dots = ({ options }: { options: IDotOption[] }) => {
   const [isActive, setIsActive] = useState(false);
 
   return (
@@ -58,7 +58,7 @@ const DotOption = ({ text, icon, onPress }: IDotOption) => {
         style={{
           paddingLeft: 10,
           fontSize: 14,
-          fontFamily: "Roboto",
+          fontFamily: "Roboto_400Regular",
         }}
         numberOfLines={1}
       >

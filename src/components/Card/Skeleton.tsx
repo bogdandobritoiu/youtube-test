@@ -53,7 +53,7 @@ const StyledSkeleton = styled(View)`
 `;
 const StyledThumbnail = styled(View)`
   background: gray;
-  height: 150px;
+  height: 160px;
 `;
 const StyledContent = styled(View)`
   padding-top: 12px;

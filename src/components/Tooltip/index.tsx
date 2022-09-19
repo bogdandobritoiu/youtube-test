@@ -20,8 +20,7 @@ export const Tooltip = ({ children, text }) => {
               color: "white",
               fontSize: 12,
               lineHeight: 18,
-              fontWeight: "500",
-              fontFamily: "Roboto",
+              fontFamily: "Roboto_500Medium",
             }}
           >
             {text}

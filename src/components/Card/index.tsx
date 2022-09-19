@@ -1,6 +1,12 @@
 import { rgba } from "polished";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import styled from "styled-components/native";
 import { getFormattedDate, isMobile, isWeb } from "../../utils";
 import { Icon } from "../Icon";
@@ -16,9 +22,9 @@ export interface ICard {
   createdAt: string;
   live: boolean;
   isActive: boolean;
+  style: any;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
-  style: any;
 }
 
 export const Card = ({
@@ -35,13 +41,45 @@ export const Card = ({
   const [isHovered, setIsHovered] = useState(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
 
+  const fontSize = useSharedValue(14);
+  const spacings = useSharedValue(isMobile ? 12 : 0);
+  const extraSpacings = useSharedValue(24);
+
+  const config = { duration: 1000, easing: Easing.bezier(0.5, 0.01, 0, 1) };
+  const spacingLeftStyle = useAnimatedStyle(() => ({
+    paddingLeft: withTiming(spacings.value, config),
+  }));
+  const spacingRightStyle = useAnimatedStyle(() => ({
+    paddingRight: withTiming(extraSpacings.value * 2, config),
+  }));
+  const spacingOptionsStyle = useAnimatedStyle(() => ({
+    paddingRight: withTiming(spacings.value, config),
+  }));
+
+  const fontStyle = useAnimatedStyle(() => {
+    return {
+      fontSize: withTiming(fontSize.value, config),
+      lineHeight: withTiming(fontSize.value + 6, config),
+    };
+  });
+
   const onMouseEnterCard = () => {
     setIsHovered(true);
+    if (isActive) {
+      fontSize.value = 16;
+      spacings.value = 12;
+      extraSpacings.value = 24;
+    }
   };
 
   const onMouseLeaveCard = () => {
     setIsHovered(false);
     if (onMouseLeave) onMouseLeave();
+    if (isActive) {
+      fontSize.value = 14;
+      spacings.value = 0;
+      extraSpacings.value = 24;
+    }
   };
 
   const onMouseEnterPreview = () => {
@@ -84,31 +122,35 @@ export const Card = ({
               image={thumbnails?.default?.url}
             />
 
-            <StyledContent isActive={isActive}>
-              <StyledContentLeft>
-                <Image
-                  source={thumbnails?.default?.url}
-                  style={{
-                    width: 36,
-                    height: 36,
-                    backgroundColor: "gray",
-                    borderRadius: 36,
-                  }}
-                />
-              </StyledContentLeft>
-              <StyledContentRight>
+            <Animated.View
+              style={[
+                {
+                  flexDirection: "row",
+                  paddingTop: 12,
+                  paddingBottom: 12,
+                  zIndex: 10,
+                },
+                spacingLeftStyle,
+              ]}
+            >
+              <Image
+                source={thumbnails?.default?.url}
+                style={{
+                  width: 36,
+                  height: 36,
+                  backgroundColor: "gray",
+                  borderRadius: 36,
+                  marginRight: 12,
+                }}
+              />
+              <Animated.View style={[{ flex: 1 }, spacingRightStyle]}>
                 <StyledTitle>
-                  <Text
-                    style={{
-                      fontFamily: "Roboto",
-                      fontSize: isActive ? 16 : 14,
-                      fontWeight: "500",
-                      lineHeight: isActive ? 22 : 20,
-                    }}
+                  <Animated.Text
+                    style={[{ fontFamily: "Roboto_500Medium" }, fontStyle]}
                     numberOfLines={2}
                   >
                     {title}
-                  </Text>
+                  </Animated.Text>
                 </StyledTitle>
 
                 <StyledInfo>
@@ -118,7 +160,7 @@ export const Card = ({
                         style={{
                           fontSize: 12,
                           lineHeight: 12,
-                          fontFamily: "Roboto",
+                          fontFamily: "Roboto_400Regular",
                           color: "#aaaaaa",
                         }}
                       >
@@ -135,7 +177,7 @@ export const Card = ({
                       style={{
                         fontSize: 12,
                         lineHeight: 12,
-                        fontFamily: "Roboto",
+                        fontFamily: "Roboto_400Regular",
                         color: "#aaaaaa",
                       }}
                     >{`14 K views • ${getFormattedDate(
@@ -145,7 +187,7 @@ export const Card = ({
                 </StyledInfo>
 
                 <View style={{ flexDirection: "row" }}>
-                  {live && (
+                  {live && !isMobile && (
                     <StyledLive>
                       <Icon color="white" name="live" size={16} />
                       <Text
@@ -153,8 +195,7 @@ export const Card = ({
                           fontSize: 12,
                           lineHeight: 12,
                           color: "white",
-                          fontWeight: "500",
-                          fontFamily: "Roboto",
+                          fontFamily: "Roboto_500Medium",
                         }}
                       >
                         {` LIVE`}
@@ -162,22 +203,24 @@ export const Card = ({
                     </StyledLive>
                   )}
                 </View>
-              </StyledContentRight>
+              </Animated.View>
 
               {(isHovered || isMobile) && (
-                <View
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
-                    paddingTop: 14,
-                    paddingRight: isActive ? 12 : 0,
-                  }}
+                <Animated.View
+                  style={[
+                    {
+                      position: "absolute",
+                      top: 0,
+                      right: 0,
+                      paddingTop: 14,
+                    },
+                    spacingOptionsStyle,
+                  ]}
                 >
                   <Dots options={options} />
-                </View>
+                </Animated.View>
               )}
-            </StyledContent>
+            </Animated.View>
 
             {isActive ? (
               <StyledOptions>
@@ -199,11 +242,10 @@ export const Button = ({ text, onPress, icon }) => (
       <Icon name={icon} size={24} />
       <Text
         style={{
-          fontFamily: "Roboto",
+          fontFamily: "Roboto_500Medium",
           fontSize: 14,
           marginLeft: 8,
           color: "#606060",
-          fontWeight: "500",
         }}
       >
         {text}
@@ -213,7 +255,8 @@ export const Button = ({ text, onPress, icon }) => (
 );
 
 const StyledButton = styled(View)`
-  padding: 6px 16px;
+  padding: 0px 16px;
+  height: 36px;
   justify-content: center;
   align-items: center;
   background: #eeeeee;
@@ -245,22 +288,6 @@ const StyledGridItemContainer = styled(View)`
         box-shadow: 0 2px 5px ${rgba(0, 0, 0, 0.16)};
       `;
   }}
-`;
-
-const StyledContent = styled(View)`
-  flex-direction: row;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: ${({ isActive }) => (isMobile || isActive ? 12 : 0)}px;
-  z-index: 1;
-`;
-
-const StyledContentLeft = styled(View)`
-  padding-right: 12px;
-`;
-const StyledContentRight = styled(View)`
-  padding-right: 24px;
-  flex: 1;
 `;
 
 const StyledTitle = styled(View)`

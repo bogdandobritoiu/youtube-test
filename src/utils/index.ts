@@ -17,29 +17,285 @@ export function getFormattedDate(date: Date) {
   return month + "/" + day + "/" + year;
 }
 
-export function timeSince(date) {
-  var seconds = Math.floor((new Date() - date) / 1000);
-
-  var interval = seconds / 31536000;
-
-  if (interval > 1) {
-    return Math.floor(interval) + " years";
-  }
-  interval = seconds / 2592000;
-  if (interval > 1) {
-    return Math.floor(interval) + " months";
-  }
-  interval = seconds / 86400;
-  if (interval > 1) {
-    return Math.floor(interval) + " days";
-  }
-  interval = seconds / 3600;
-  if (interval > 1) {
-    return Math.floor(interval) + " hours";
-  }
-  interval = seconds / 60;
-  if (interval > 1) {
-    return Math.floor(interval) + " minutes";
-  }
-  return Math.floor(seconds) + " seconds";
-}
+export const DUMMY_ITEMS = [
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "1",
+    creator: "Creator",
+    live: true,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Music makes you happy whenever you bla bla",
+    createdAt: "created at",
+    id: "2",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "How To Think Like A Programmer bla",
+    createdAt: "created at",
+    id: "3",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "4",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "5",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "6",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "7",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "8",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "9",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "10",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "11",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "12",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "13",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "14",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "15",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "16",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "17",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "18",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "19",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+  {
+    title: "Title",
+    createdAt: "created at",
+    id: "20",
+    creator: "Creator",
+    live: false,
+    thumbnails: {
+      high: {
+        url: "",
+        width: 100,
+        height: 100,
+      },
+    },
+  },
+];

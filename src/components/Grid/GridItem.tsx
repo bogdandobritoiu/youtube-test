@@ -7,7 +7,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import styled from "styled-components/native";
-import { Card, ICard } from "./Card";
+import { Card, ICard } from "../Card";
 
 export const GridItem = (props: ICard) => {
   const [isHovered, setIsHovered] = useState(false);

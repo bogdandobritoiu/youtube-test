@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -8,15 +8,24 @@ import {
   View,
 } from "react-native";
 import styled from "styled-components/native";
-import { isMobile, isWeb } from "../../utils";
-import { ICard } from "./Card";
+import { isMobile } from "../../utils";
+import { ICard } from "../Card";
 import { GridItem } from "./GridItem";
-import Skeleton from "./Skeleton";
-import { useGrid } from "./useGrid";
+import Skeleton from "../Card/Skeleton";
 
-export const Grid = () => {
-  const { items, isLoadingMore, onLoadMore, isLoading } = useGrid();
+interface IGrid<T> {
+  items: T[];
+  isLoadingMore: boolean;
+  isLoading: boolean;
+  onLoadMore: () => void;
+}
 
+export const Grid = ({
+  items,
+  isLoadingMore,
+  onLoadMore,
+  isLoading,
+}: IGrid<ICard>) => {
   const windowWidth = Dimensions.get("window").width;
 
   const renderSkeleton = () => {
@@ -29,7 +38,7 @@ export const Grid = () => {
               isLoading={isLoading}
               style={{
                 width: isMobile ? windowWidth : (windowWidth - 4 * 24) / 4,
-                height: isMobile ? "auto" : 290,
+                height: isMobile ? "auto" : 300,
               }}
             />
           );
@@ -106,7 +115,7 @@ export const Grid = () => {
               {...item}
               key={item.id}
               width={(windowWidth - 4 * 24) / 4}
-              height={290}
+              height={300}
             />
           ))}
         </View>

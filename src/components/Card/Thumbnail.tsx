@@ -50,8 +50,7 @@ export const Thumbnail = ({
             color: "white",
             fontSize: 12,
             lineHeight: 12,
-            fontFamily: "Roboto",
-            fontWeight: "500",
+            fontFamily: "Roboto_500Medium",
             letterSpacing: 0.5,
           }}
         >
@@ -64,8 +63,7 @@ export const Thumbnail = ({
             color: "white",
             fontSize: 12,
             lineHeight: 12,
-            fontFamily: "Roboto",
-            fontWeight: "500",
+            fontFamily: "Roboto_500Medium",
           }}
         >
           Keep hovering to play
@@ -76,7 +74,7 @@ export const Thumbnail = ({
 };
 
 const StyledThumbnail = styled(View)`
-  height: 150px;
+  height: 160px;
   background: gray;
 `;
 

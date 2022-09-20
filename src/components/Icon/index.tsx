@@ -1,6 +1,7 @@
 import React from "react";
 import SvgIcon from "react-native-svg-icon";
 import svgs from "../../../assets/svg";
+import { isWeb } from "../../utils";
 
 export interface IconInterface {
   name: string;
@@ -20,7 +21,8 @@ export const Icon = ({
   return (
     <SvgIcon
       // TODO: Fix this
-      {...props}
+      // {...props}
+      name={isWeb ? props.name : ""}
       viewBox={`0 0 24 24`}
       fill={color}
       width={width ?? size}

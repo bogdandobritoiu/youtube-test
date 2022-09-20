@@ -26,15 +26,15 @@ export function useHome() {
       setNextPageToken(result?.nextPageToken || null);
       setItems((currentItems) => [
         ...currentItems,
-        // ...(result?.items?.map((item: any) => ({
-        //   id: item?.id?.videoId,
-        //   title: item?.snippet?.title,
-        //   creator: item?.snippet?.channelTitle,
-        //   thumbnails: item?.snippet?.thumbnails,
-        //   createdAt: item?.snippet?.publishedAt,
-        //   live: item?.snippet?.liveBroadcastContent,
-        // })) || []),
-        ...DUMMY_ITEMS,
+        ...(result?.items?.map((item: any) => ({
+          id: item?.id?.videoId,
+          title: item?.snippet?.title,
+          creator: item?.snippet?.channelTitle,
+          thumbnails: item?.snippet?.thumbnails,
+          createdAt: item?.snippet?.publishedAt,
+          live: item?.snippet?.liveBroadcastContent,
+        })) || []),
+        // ...DUMMY_ITEMS,
       ]);
     } catch (error) {
       console.warn(error);

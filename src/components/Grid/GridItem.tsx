@@ -7,15 +7,18 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import styled from "styled-components/native";
+import { useMedia } from "../../utils/useMedia";
 import { Card, ICard } from "../Card";
 
 export const GridItem = (props: ICard) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isCardHovered, setIsCardHovered] = useState(false);
   let timerRef = useRef<NodeJS.Timeout>();
+  const media = useMedia();
 
   const onMouseEnter = () => {
     // timerRef.current = setTimeout(() => {
+    if (media.isMobile) return;
     setIsHovered(true);
     scale.value = -20;
     width.value = width.value + 40;
@@ -24,6 +27,7 @@ export const GridItem = (props: ICard) => {
 
   const onMouseLeave = () => {
     // clearTimeout(timerRef.current);
+    if (media.isMobile) return;
     scale.value = 0;
     width.value = props.width;
     setTimeout(() => {

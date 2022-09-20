@@ -113,7 +113,7 @@ export const Dots = ({ options }: { options: IDotOption[] }) => {
 
 export interface IDotOption {
   text: string;
-  icon: string;
+  icon: any;
   onPress: () => void;
 }
 
@@ -178,6 +178,7 @@ const StyledOption = styled(Pressable)`
 
 const StyledDots = styled(View)`
   border-radius: 60px;
+  cursor: pointer;
 `;
 
 const StyledButton = styled(Pressable)`

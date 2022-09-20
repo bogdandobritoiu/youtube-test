@@ -11,6 +11,7 @@ import { Card, ICard } from "../Card";
 
 export const GridItem = (props: ICard) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isCardHovered, setIsCardHovered] = useState(false);
   let timerRef = useRef<NodeJS.Timeout>();
 
   const onMouseEnter = () => {
@@ -45,12 +46,27 @@ export const GridItem = (props: ICard) => {
     };
   }, [isHovered]);
 
+  function onMouseEnterCard() {
+    setIsCardHovered(true);
+  }
+  function onMouseLeaveCard() {
+    setTimeout(() => {
+      setIsCardHovered(false);
+    }, 500);
+  }
+
   return (
-    <StyledGridItem isHovered={isHovered}>
+    <StyledGridItem
+      onMouseEnter={onMouseEnterCard}
+      onMouseLeave={onMouseLeaveCard}
+      style={{
+        zIndex: isCardHovered ? 1 : 0,
+      }}
+    >
       <Card
         {...props}
         onMouseEnter={onMouseEnter}
-        style={{ width: props.width, zIndex: isHovered ? 1 : 99 }}
+        style={{ width: props.width }}
       />
       <Animated.View
         pointerEvents={isHovered ? "auto" : "none"}
@@ -70,7 +86,4 @@ export const GridItem = (props: ICard) => {
   );
 };
 
-const StyledGridItem = styled(View)`
-  /* flex: 1; */
-  z-index: ${({ isHovered }) => (isHovered ? 100 : 0)};
-`;
+const StyledGridItem = styled(View)``;

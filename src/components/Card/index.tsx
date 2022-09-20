@@ -1,5 +1,5 @@
 import { rgba } from "polished";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import Animated, {
   Easing,
@@ -8,7 +8,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import styled from "styled-components/native";
-import { getFormattedDate, isMobile, isWeb } from "../../utils";
+import { getFormattedDate } from "../../utils";
 import { useMedia } from "../../utils/useMedia";
 import { Icon } from "../Icon";
 import { Tooltip } from "../Tooltip";
@@ -252,9 +252,17 @@ export const Card = ({
 
             {isActive ? (
               <StyledOptions>
-                <Button icon="watch-later" text="WATCH LATER" />
+                <Button
+                  icon="watch-later"
+                  text="WATCH LATER"
+                  onPress={() => alert("watch later")}
+                />
                 <View style={{ height: 8 }}></View>
-                <Button icon="add-to-queue" text="ADD TO QUEUE" />
+                <Button
+                  icon="add-to-queue"
+                  text="ADD TO QUEUE"
+                  onPress={() => alert("add to queue")}
+                />
               </StyledOptions>
             ) : null}
           </StyledGridItemShadow>

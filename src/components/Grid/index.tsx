@@ -93,66 +93,75 @@ export const Grid = ({
       </StyledGrid>
     );
 
-  const isCloseToBottom = ({
-    layoutMeasurement,
-    contentOffset,
-    contentSize,
-  }) => {
+  const onScroll = ({ nativeEvent }) => {
+    const { layoutMeasurement, contentOffset, contentSize } = nativeEvent;
     const paddingToBottom = 40;
-    return (
+    const closeToBottom =
       layoutMeasurement.height + contentOffset.y >=
-      contentSize.height - paddingToBottom
-    );
+      contentSize.height - paddingToBottom;
+    if (closeToBottom) {
+      onLoadMore();
+    }
   };
 
   return (
-    <ScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={{
-        paddingTop: media.isMobile ? 0 : 24,
-        paddingHorizontal: media.isMobile ? 0 : 16,
-      }}
-      onScroll={({ nativeEvent }) => {
-        if (isCloseToBottom(nativeEvent)) {
-          onLoadMore();
-        }
-      }}
-      scrollEventThrottle={400}
-    >
-      <View style={{ flex: 1 }}>
-        <View
-          style={{
-            flexWrap: "wrap",
-            flexDirection: "row",
-            position: "relative",
-          }}
-        >
-          {items.map((item) => (
-            <GridItem
-              {...item}
-              key={item.id}
-              width={itemWidth}
-              height={itemHeight}
-            />
-          ))}
+    <StyledGrid>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          paddingTop: media.isMobile ? 0 : 24,
+          paddingHorizontal: media.isMobile ? 0 : 16,
+          paddingBottom: 30,
+        }}
+        onScroll={onScroll}
+        scrollEventThrottle={400}
+      >
+        <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flexWrap: "wrap",
+              flexDirection: "row",
+              position: "relative",
+            }}
+          >
+            {items.map((item) => (
+              <GridItem
+                {...item}
+                key={item.id}
+                width={itemWidth}
+                height={itemHeight}
+              />
+            ))}
+          </View>
+          <View
+            pointerEvents={isLoading ? "auto" : "none"}
+            style={{
+              flexWrap: "wrap",
+              flexDirection: "row",
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+          >
+            {renderSkeleton()}
+          </View>
         </View>
-        <View
-          pointerEvents={isLoading ? "auto" : "none"}
-          style={{
-            flexWrap: "wrap",
-            flexDirection: "row",
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
-            position: "absolute",
-            top: 0,
-            left: 0,
-          }}
-        >
-          {renderSkeleton()}
-        </View>
+      </ScrollView>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 20,
+          left: 0,
+          right: 0,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <ActivityIndicator animating={isLoadingMore} />
       </View>
-    </ScrollView>
+    </StyledGrid>
   );
 };
 

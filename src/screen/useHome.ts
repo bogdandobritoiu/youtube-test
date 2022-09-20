@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { YOUTUBE_KEY } from "@env";
 import { ICard } from "../components/Card";
 import { DUMMY_ITEMS } from "../utils";
+
 const YOUTUBE_URL = "https://www.googleapis.com/youtube/v3/";
 
 export function useHome() {
